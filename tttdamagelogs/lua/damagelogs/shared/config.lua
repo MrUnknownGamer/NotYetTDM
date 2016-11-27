@@ -23,17 +23,17 @@ Damagelog:AddUser("guest", 1, false)
 CreateConVar("Damagelog_OpenKey", KEY_F8, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "The key to be bound to Damagelog")
 
 --[[ Is a message shown when an alive player opens the menu?
-	false : if you want to only show it to superadmins
-	true : to let others see that you have abusive admins
+	0 : if you want to only show it to superadmins
+	1 : to let others see that you have abusive admins
 ]]--
 
 -- Damagelog.AbuseMessageMode = 1
-CreateConVar("Damagelog_AbuseMessageMode", false, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether a message is shown to others when an alive player opens the Damagelog menu")
+CreateConVar("Damagelog_AbuseMessageMode", "0", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether a message is shown to others when an alive player opens the Damagelog menu")
 
 -- true to enable the RDM Manager, false to disable it
 
 -- Damagelog.RDM_Manager_Enabled = true
-CreateConVar("Damagelog_RDMManagerEnabled", true, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether the RDM Manager is enabled or not")
+CreateConVar("Damagelog_RDMManagerEnabled", "1", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether the RDM Manager is enabled or not")
 
 -- Command to open the report menu. Don't forget the quotation marks
 
@@ -50,7 +50,7 @@ CreateConVar("Damagelog_RDMRespondCommand", "!respond", {FCVAR_REPLICATED, FCVAR
 ]]--
 
 -- Damagelog.Use_MySQL = false
-CreateConVar("Damagelog_UseMySQL", false, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether to use MySQL or the bultin SQLite")
+CreateConVar("Damagelog_UseMySQL", "0", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether to use MySQL or the bultin SQLite")
 
 
 -- You can enable every command or no command
@@ -62,22 +62,22 @@ Example : !aslayid STEAM_0:0:1234567 2 RDMing a traitor
 ]]--
 
 -- Damagelog.Enable_Autoslay = false
-CreateConVar("Damagelog_EnableAutoslay", false, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the !aslay commands for ULX")
+CreateConVar("Damagelog_EnableAutoslay", "0", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the !aslay commands for ULX")
 
 -- Force autoslain players to be innocents (overrides SelectRoles)
 
 -- Damagelog.Autoslay_ForceRole = false
-CreateConVar("Damagelog_AutoslayForceRole", false, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Force autoslain players to be innocents")
+CreateConVar("Damagelog_AutoslayForceRole", "0", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Force autoslain players to be innocents")
 
 
-CreateConVar("Damagelog_EnableAutojail", false, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the !ajail commands for ULX")
+CreateConVar("Damagelog_EnableAutojail", "0", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the !ajail commands for ULX")
 
-CreateConVar("Damagelog_AutojailForceRespond", true, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Forces the jailed player to respond")
+CreateConVar("Damagelog_AutojailForceRespond", "1", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Forces the jailed player to respond")
 
-CreateConVar("Damagelog_AutojailAutounjail", true, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Unjails player after responding. Only works when ForceRespond activated")
+CreateConVar("Damagelog_AutojailAutounjail", "1", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Unjails player after responding. Only works when ForceRespond activated")
 
 
-CreateConVar("Damagelog_EnableAutokarma", false, {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the !akarma commands for ULX")
+CreateConVar("Damagelog_EnableAutokarma", "0", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable the !akarma commands for ULX")
 
 
 -- Default autoslay reason
