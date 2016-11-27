@@ -92,6 +92,7 @@ language.Add(Damagelog.NoSelectedReport, "No selected report")
 language.Add(Damagelog.LogsBeforeVictim, "Logs before victim's death")
 language.Add(Damagelog.NoResponseYet, "No response yet")
 language.Add(Damagelog.NoWeaponOrOwner, "No weapon or owner")
+-- language.Add(Damagelog., "")
 
 -- Weapons
 language.Add(Damagelog., "")
