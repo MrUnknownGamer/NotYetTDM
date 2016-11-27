@@ -9,6 +9,8 @@ AddCSLuaFile("damagelogs/shared/config.lua")
 AddCSLuaFile("damagelogs/shared/sync.lua")
 AddCSLuaFile("damagelogs/shared/weapontable.lua")
 
+AddCSLuaFile("damagelogs/client/colors.lua")
+
 include("damagelogs/shared/config.lua")
 include("damagelogs/shared/sync.lua")
 include("damagelogs/shared/weapontable.lua")
@@ -36,7 +38,9 @@ if GetConVar("Damagelog_EnableAutokarma"):GetBool() then
 end
 
 if GetConVar("Damagelog_RDMManagerEnabled"):GetBool() then
-	AddCSLuaFile("damagelogs/server/rdm_manager.lua")
+	AddCSLuaFile("damagelogs/shared/rdm_manager.lua")
+	AddCSLuaFile("damagelogs/client/rdm_manager.lua")
+	include("damagelogs/shared/rdm_manager.lua")
 	include("damagelogs/server/rdm_manager.lua")
 	-- resource.AddFile("sound/ui/vote_failure.wav")
 	-- resource.AddFile("sound/ui/vote_yes.wav")
