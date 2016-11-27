@@ -2,7 +2,6 @@
 -- Damagelog:Error(debug.getinfo(1).source, debug.getinfo(1).currentline, "connection error")
 function Damagelog:Error(file, line, strg)
 	print("Damagelogs: ERROR - "..file.." ("..line..") - "..strg)
-	-- save to file (send to server? one per day keeps the shit away)
 end
 
 
@@ -15,18 +14,11 @@ include("damagelogs/shared/sync.lua")
 -- include("damagelogs/shared/init.lua")
 
 -- Adding language files for download
-local lFiles = file.Find("damagelogs/shared/lang/*.lua", "LUA")
+local lFiles = file.Find("damagelogs/client/lang/*.lua", "LUA")
 for i=1, #lFiles do
-	AddCSLuaFile("damagelogs/shared/lang/"..lFiles[i])
+	AddCSLuaFile("damagelogs/client/lang/"..lFiles[i])
 end
 
--- if file.Exists("damagelogs/shared/lang/"..GetConVar("Damagelog_Language"):GetString():lower()..".lua", "LUA") then
-	-- AddCSLuaFile("damagelogs/shared/lang/"..GetConVar("Damagelog_Language"):GetString():lower()..".lua")
-	-- include("damagelogs/shared/lang/"..GetConVar("Damagelog_Language"):GetString():lower()..".lua")
--- else
-	-- AddCSLuaFile("damagelogs/shared/lang/english.lua")
-	-- include("damagelogs/shared/lang/english.lua")
--- end
 
 if GetConVar("Damagelog_EnableAutoslay"):GetBool() then
 	-- include("damagelogs/server/sh_rdm_manager.lua")

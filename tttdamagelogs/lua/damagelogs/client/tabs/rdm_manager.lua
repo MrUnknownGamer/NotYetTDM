@@ -55,12 +55,12 @@ cvars.AddChangeCallback("rdm_manager_show_finished", function(name, old, new)
 end)
 
 local status = {
-	[RDM_MANAGER_WAITING_FOR_ATTACKER] = "Waiting for reported player",
-	[RDM_MANAGER_WAITING_FOR_VICTIM] = "Waiting for victim",
-	[RDM_MANAGER_WAITING] = "Waiting",
-	[RDM_MANAGER_PROGRESS] = "In progress",
-	[RDM_MANAGER_FINISHED] = "Finished",
-	[RDM_MANAGER_CANCELED] = "Canceled by the victim"
+	[RDM_MANAGER_WAITING_FOR_ATTACKER] = "#Damagelog.RDMWatingReported",
+	[RDM_MANAGER_WAITING_FOR_VICTIM] = "#Damagelog.RDMWatingVictim",
+	[RDM_MANAGER_WAITING] = "#Damagelog.RDMWating",
+	[RDM_MANAGER_PROGRESS] = "#Damagelog.RDMInProgress",
+	[RDM_MANAGER_FINISHED] = "#Damagelog.RDMFinished",
+	[RDM_MANAGER_CANCELED] = "#Damagelog.RDMCanceled"
 }
 
 local icons = {
@@ -85,12 +85,12 @@ local function TakeAction()
 	local attacker = player.GetBySteamID(report.attacker)
 	local victim = player.GetBySteamID(report.victim)
 	local menuPanel = DermaMenu()
-	menuPanel:AddOption("Set conclusion", function()
+	menuPanel:AddOption("#Damagelog.RDMSetConclusion", function()
 		if report.status != RDM_MANAGER_FINISHED then
-			Damagelog:Notify(DAMAGELOG_NOTIFY_ALERT, "This report is not finished!", 3, "buttons/weapon_cant_buy.wav")
+			Damagelog:Notify(DAMAGELOG_NOTIFY_ALERT, "#Damagelog.RDMNotFinished", 3, "buttons/weapon_cant_buy.wav")
 			return
 		end
-		Derma_StringRequest("Conclusion", "Please write the conclusion for this report", "", function(txt)
+		Derma_StringRequest("#Damagelog.RDMConclusion", "#Damagelog.RDMWriteConclusion", "", function(txt)
 			if #txt > 0 and #txt < 200 then
 				net.Start("DL_Conclusion")
 				net.WriteUInt(0,1)
@@ -102,20 +102,20 @@ local function TakeAction()
 		end)
 	end):SetImage("icon16/comment.png")
 	if report.status == RDM_MANAGER_WAITING_FOR_ATTACKER then
-		menuPanel:AddOption("Force the reported player to respond", function()
+		menuPanel:AddOption("#Damagelog.RDMForceRespond", function()
 			if IsValid(attacker) then
 				net.Start("DL_ForceRespond")
 				net.WriteUInt(report.index, 16)
 				net.WriteUInt(current and 0 or 1, 1)
 				net.SendToServer()
 			else
-				Derma_Message("The reported player isn't valid! (disconnected?)", "Error", "OK")
+				Derma_Message("#Damagelog.RDMNotValid", "#Damagelog.Error", "OK")
 			end
 		end):SetImage("icon16/clock_red.png")
 	end
 	if report.status == RDM_MANAGER_PROGRESS then
 		if not report.chat_open then
-			menuPanel:AddOption(report.chat_opened and "Reopen chat" or "Open chat", function()
+			menuPanel:AddOption(report.chat_opened and "#Damagelog.Reopen #Damagelog.Chat" or "#Damagelog.Open #Damagelog.Chat", function()
 				net.Start("DL_StartChat")
 				net.WriteUInt(report.index, 32)
 				net.SendToServer()
@@ -124,14 +124,14 @@ local function TakeAction()
 				end
 			end):SetImage("icon16/application_view_list.png")
 		else
-			menuPanel:AddOption("Join chat", function()
+			menuPanel:AddOption("#Damagelog.Join #Damagelog.Chat", function()
 				net.Start("DL_JoinChat")
 				net.WriteUInt(report.index, 32)
 				net.SendToServer()
 			end):SetImage("icon16/application_go.png")
 		end
 	end
-	menuPanel:AddOption("View Death Scene", function()
+	menuPanel:AddOption("#Damagelog.RDMDeathScene", function()
 		local found = false
 		for k,v in pairs(report.logs or {}) do
 			if v.type == "KILL" then
@@ -148,10 +148,10 @@ local function TakeAction()
 			end
 		end
 		if not found then
-			Derma_Message("Could not find the Death Scene", "Error", "OK")
+			Derma_Message("#Damagelog.DeathSceneNotFound", "#Damagelog.Error", "OK")
 		end
 	end):SetImage("icon16/television.png")
-	if ulx then
+	if ulx then -- Don'n edit - Min is putting new code here (ajail too)
 		if Damagelog.Enable_Autoslay then
 			local slaynr_pnl = vgui.Create("DMenuOption", menuPanel)
 			local slaynr = DermaMenu(menuPanel)
@@ -240,7 +240,7 @@ local function TakeAction()
 				RunConsoleCommand("ulx", "aslayid", report.victim, "0")
 			end
 		end):SetImage("icon16/user.png")
-	end
+	end -- End not editing zone
 	menuPanel:Open() 
 end
 
@@ -250,11 +250,11 @@ local PANEL = {}
 function PANEL:Init()
 	self:SetMultiSelect(false)
 	self:AddColumn("ID"):SetFixedWidth(34)
-	self:AddColumn("Victim"):SetFixedWidth(105)
-	self:AddColumn("Reported player"):SetFixedWidth(105)
-	self:AddColumn("Round"):SetFixedWidth(54)
-	self:AddColumn("Autoslay status"):SetFixedWidth(135)
-	self:AddColumn("Status"):SetFixedWidth(180)
+	self:AddColumn("#Damagelog.Victim"):SetFixedWidth(105)
+	self:AddColumn("#Damagelog.ReportedPlayer"):SetFixedWidth(105)
+	self:AddColumn("#Damagelog.Round"):SetFixedWidth(54)
+	self:AddColumn("Autoslay status"):SetFixedWidth(135) -- here comes autojail, too.
+	self:AddColumn("#Damagelog.Status"):SetFixedWidth(180)
 	self.Reports = {}
 end
 
@@ -267,7 +267,7 @@ function PANEL:SetReportsTable(tbl)
 	self.ReportsTable = tbl
 end
 
-function PANEL:GetAttackerSlays(report)
+function PANEL:GetAttackerSlays(report) -- here comes autojail, too.
 	for k,v in pairs(player.GetAll()) do
 		local steamid = v:IsBot() and "BOT" or v:SteamID()
 		if steamid == report.attacker then
@@ -285,10 +285,10 @@ end
 function PANEL:GetStatus(report)
 	local str = status[report.status]
 	if (report.status == RDM_MANAGER_FINISHED or report.status == RDM_MANAGER_PROGRESS) and report.admin then
-		str = str.." by "..report.admin
+		str = str.." #Damagelog.by "..report.admin
 	end
 	if report.chat_open then
-		str = str.." (in chat)"
+		str = str.." #Damagelog.InChat"
 	end
 	return str
 end
@@ -394,7 +394,7 @@ function PANEL:UpdateAllReports()
 			if conclusion then
 				self.Conclusion:SetText(conclusion)
 			else
-				self.Conclusion:SetText("No conclusion for the selected report.")
+				self.Conclusion:SetText("#Damagelog.NoConclusion.")
 			end
 			if not report.response and report.chat_opened then
 				Damagelog.DisableResponse(true)
@@ -419,7 +419,7 @@ function PANEL:OnRowSelected(index, line)
 	if conclusion then
 		self.Conclusion:SetText(conclusion)
 	else
-		self.Conclusion:SetText("No conclusion for the selected report.")
+		self.Conclusion:SetText("#Damagelog.NoConclusion.")
 	end
 	if Damagelog.SelectedReport.previous then
 		if Damagelog.CurrentReports:GetSelected()[1] then
@@ -512,15 +512,15 @@ function Damagelog:DrawRDMManager(x,y)
 		self.CurrentReports = vgui.Create("RDM_Manager_ListView")
 		self.CurrentReports:SetReportsTable(Damagelog.Reports.Current)
 		self.CurrentReports.Previous = false
-		ReportsSheet:AddSheet("Reports", self.CurrentReports, "icon16/zoom.png")
+		ReportsSheet:AddSheet("#Damagelog.Reports", self.CurrentReports, "icon16/zoom.png")
 		
 		self.PreviousReports = vgui.Create("RDM_Manager_ListView")
 		self.PreviousReports:SetReportsTable(Damagelog.Reports.Previous)
 		self.PreviousReports.Previous = true
-		ReportsSheet:AddSheet("Previous map reports", self.PreviousReports, "icon16/world.png")
+		ReportsSheet:AddSheet("#Damagelog.PreviousMapReports", self.PreviousReports, "icon16/world.png")
 	
 		local ShowFinished = vgui.Create("DCheckBoxLabel", Background)
-		ShowFinished:SetText("Show finished reports")
+		ShowFinished:SetText("#Damagelog.ShowFinishedReports")
 		ShowFinished:SetConVar("rdm_manager_show_finished")
 		ShowFinished:SizeToContents()
 		ShowFinished:SetPos(235, 7)
@@ -537,7 +537,7 @@ function Damagelog:DrawRDMManager(x,y)
 		end
 	
 		local SetState = vgui.Create("DButton", Background)
-		SetState:SetText("Set Status")
+		SetState:SetText("#Damagelog.Set #Damagelog.Status")
 		SetState:SetPos(510, 4)
 		SetState:SetSize(125, 18)
 		SetState.Think = function(self)
@@ -572,10 +572,10 @@ function Damagelog:DrawRDMManager(x,y)
 			local bar_height = 27
 			surface.SetDrawColor(30, 200, 30)
 			surface.DrawRect(0, 0, (w/2), bar_height)
-			draw.SimpleText("Victim's report", "DL_RDM_Manager", w/4, bar_height/2, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("#Damagelog.VictimsReport", "DL_RDM_Manager", w/4, bar_height/2, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			surface.SetDrawColor(220, 30, 30)
 			surface.DrawRect((w/2)+1, 0, (w/2), bar_height)
-			draw.SimpleText("Reported player's response", "DL_RDM_Manager", (w/2) + 1 + (w/4), bar_height/2, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("#ReportedPlayerResponse", "DL_RDM_Manager", (w/2) + 1 + (w/4), bar_height/2, Color(0,0,0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			surface.SetDrawColor(0, 0, 0)
 			surface.DrawOutlinedRect(0, 0, w, h)
 			surface.DrawLine(w/2, 0, w/2, h)
@@ -602,7 +602,7 @@ function Damagelog:DrawRDMManager(x,y)
 				surface.SetDrawColor(Color(0, 0, 0, 240))
 				surface.DrawRect(0, 0, w, h)
 				surface.SetFont("DL_ResponseDisabled")
-				local text = "Chat opened, player's response disabled"
+				local text = "#Damagelog.ChatOpened"
 				local wt, ht = surface.GetTextSize(text)
 				wt = wt
 				surface.SetTextColor(color_white)
@@ -624,7 +624,7 @@ function Damagelog:DrawRDMManager(x,y)
 		
 		local Conclusion = vgui.Create("DPanel")
 		surface.SetFont("DL_Conclusion")
-		local cx,cy = surface.GetTextSize("Conclusion :")
+		local cx,cy = surface.GetTextSize("#Damagelog.Conclusion :")
 		local cm = 5
 		Conclusion.PaintOver = function(panel, w, h)
 			if not panel.t1 then return end
@@ -636,7 +636,7 @@ function Damagelog:DrawRDMManager(x,y)
 			surface.SetFont("DL_Conclusion")
 			surface.SetTextPos(cm, panel.t2 and (h/3 - cy/2) or (h/2 - cy/2))
 			surface.SetTextColor(Color(0, 108, 155))
-			surface.DrawText("Conclusion : ")
+			surface.DrawText("#Damagelog.Conclusion : ")
 			surface.SetFont("DL_ConclusionText")
 			surface.SetTextColor(color_black)
 			local tx1, ty1 = surface.GetTextSize(panel.t1)
@@ -677,7 +677,7 @@ function Damagelog:DrawRDMManager(x,y)
 			Manager:PerformLayout()
 		end
 		Conclusion.SetDefaultText = function(pnl)
-			pnl:SetText("No selected report.")
+			pnl:SetText("#Damagelog.NoSelectedReport.")
 		end
 		Conclusion.ApplySchemeSettings = function(pnl)
 			if pnl.Text then
@@ -693,7 +693,7 @@ function Damagelog:DrawRDMManager(x,y)
 		
 		VictimLogsForm = vgui.Create("DForm")
 		VictimLogsForm.SetExpanded = function() end
-		VictimLogsForm:SetName("Logs before victim's death")
+		VictimLogsForm:SetName("#Damagelog.LogsBeforeVictim")
 	
 		VictimLogs = vgui.Create("DListView")
 		VictimLogs:AddColumn("Time"):SetFixedWidth(40)
@@ -708,7 +708,7 @@ function Damagelog:DrawRDMManager(x,y)
 				KillerMessage:SetText("")
 			else
 				VictimMessage:SetText(selected.message)
-				KillerMessage:SetText(selected.response or "No response yet")
+				KillerMessage:SetText(selected.response or "#Damagelog.NoResponseYet")
 			end
 			VictimLogs:Clear()
 			if selected and selected.logs then
@@ -732,4 +732,3 @@ function Damagelog:DrawRDMManager(x,y)
 		self.PreviousReports:UpdateAllReports()
 	end
 end
-

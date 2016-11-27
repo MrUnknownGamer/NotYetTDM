@@ -17,13 +17,6 @@ Damagelog:AddUser("operator", 3, false)
 Damagelog:AddUser("user", 1, false)
 Damagelog:AddUser("guest", 1, false)
 
--- Language used on the server. Clients can use their own language.
--- Current supported languages:
--- English: "english"
--- German: "deutsch"
-
--- CreateConVar("Damagelog_Language", "english", {FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Used language in Damagelog")
-
 -- The F-key
 
 -- Damagelog.Key = KEY_F8
