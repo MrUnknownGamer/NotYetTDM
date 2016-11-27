@@ -91,4 +91,7 @@ language.Add(Damagelog.ChatOpened, "Chat opened, player's response disabled")
 language.Add(Damagelog.NoSelectedReport, "No selected report")
 language.Add(Damagelog.LogsBeforeVictim, "Logs before victim's death")
 language.Add(Damagelog.NoResponseYet, "No response yet")
--- language.Add(Damagelog., "")
+language.Add(Damagelog.NoWeaponOrOwner, "No weapon or owner")
+
+-- Weapons
+language.Add(Damagelog., "")

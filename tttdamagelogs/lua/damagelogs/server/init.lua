@@ -5,13 +5,16 @@ function Damagelog:Error(file, line, strg)
 end
 
 
+AddCSLuaFile("damagelogs/shared/config.lua")
 AddCSLuaFile("damagelogs/shared/sync.lua")
-AddCSLuaFile("damagelogs/shares/config.lua")
--- AddCSLuaFile("damagelogs/shared/init.lua")
+AddCSLuaFile("damagelogs/shared/weapontable.lua")
 
 include("damagelogs/shared/config.lua")
 include("damagelogs/shared/sync.lua")
--- include("damagelogs/shared/init.lua")
+include("damagelogs/shared/weapontable.lua")
+
+include("damagelogs/server/damageinfos.lua")
+include("damagelogs/server/weapontable.lua")
 
 -- Adding language files for download
 local lFiles = file.Find("damagelogs/client/lang/*.lua", "LUA")
@@ -21,7 +24,7 @@ end
 
 
 if GetConVar("Damagelog_EnableAutoslay"):GetBool() then
-	-- include("damagelogs/server/sh_rdm_manager.lua")
+	-- include("damagelogs/server/rdm_manager.lua")
 end
 
 if GetConVar("Damagelog_EnableAutojail"):GetBool() then
@@ -33,7 +36,8 @@ if GetConVar("Damagelog_EnableAutokarma"):GetBool() then
 end
 
 if GetConVar("Damagelog_RDMManagerEnabled"):GetBool() then
-	-- include("damagelogs/server/sh_rdm_manager.lua")
+	AddCSLuaFile("damagelogs/server/rdm_manager.lua")
+	include("damagelogs/server/rdm_manager.lua")
 	-- resource.AddFile("sound/ui/vote_failure.wav")
 	-- resource.AddFile("sound/ui/vote_yes.wav")
 end

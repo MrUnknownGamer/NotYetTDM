@@ -90,3 +90,4 @@ language.Add(Damagelog.ChatOpened, "Chat geöffnet, Antwort des Spielers deaktiv
 language.Add(Damagelog.NoSelectedReport, "Keine Meldung ausgewählt")
 language.Add(Damagelog.LogsBeforeVictim, "Protokolle vor dem Tod des Opfers")
 language.Add(Damagelog.NoResponseYet, "Noch keine Antwort")
+language.Add(Damagelog.NoWeaponOrOwner, "Keine Waffe oder Eigentümer")

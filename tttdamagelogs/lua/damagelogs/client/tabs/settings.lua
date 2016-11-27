@@ -1,15 +1,12 @@
-
-
 function Damagelog:DrawSettings(x, y)
-
-    local selectedcolor
+	local selectedcolor
 
     self.Settings = vgui.Create("DPanelList")
 	self.Settings:SetSpacing(10)
 	self.Settings:EnableVerticalScrollbar(true)
 	
 	self.ColorSettings = vgui.Create("DForm")
-	self.ColorSettings:SetName("Colors")
+	self.ColorSettings:SetName("#Damagelog.Colors")
 	
 	self.ColorChoice = vgui.Create("DComboBox")
 	for k,v in pairs(self.colors) do
@@ -35,7 +32,7 @@ function Damagelog:DrawSettings(x, y)
 	self.ColorSettings:AddItem(self.ColorMixer)
 	
 	self.SaveColor = vgui.Create("DButton")
-	self.SaveColor:SetText("Save")
+	self.SaveColor:SetText("#Damagelog.Save")
 	self.SaveColor.DoClick = function()
 	    local c = self.ColorMixer:GetColor()
 		self.colors[selectedcolor].Custom = c
@@ -44,7 +41,7 @@ function Damagelog:DrawSettings(x, y)
 	self.ColorSettings:AddItem(self.SaveColor)
 	
 	self.defaultcolor = vgui.Create("DButton")
-	self.defaultcolor:SetText("Set as default")
+	self.defaultcolor:SetText("#Damagelog.SetDefault")
 	self.defaultcolor.DoClick = function()
 		local c = self.colors[selectedcolor].Default
 	    self.ColorMixer:SetColor(c)
@@ -56,14 +53,14 @@ function Damagelog:DrawSettings(x, y)
 	self.Settings:AddItem(self.ColorSettings)
 	
 	self.WeaponForm = vgui.Create("DForm")
-	self.WeaponForm:SetName("Edit weapon/entity names (Superadmins only!)")
+	self.WeaponForm:SetName("#Damagelog.EditNames")
 		
 	self.AddWeapon = vgui.Create("DButton")
-	self.AddWeapon:SetText("Add a new weapon or entity")
+	self.AddWeapon:SetText("#Damagelog.AddWeaponEntity")
 	self.AddWeapon.DoClick = function()
 		if not LocalPlayer():IsSuperAdmin() then return end
-		Derma_StringRequest("Weapon ID", "Weapon name/ID (example: weapon_ttt_deagle):", "weapon_", function(class)
-			Derma_StringRequest("Weapon display name", "Weapon display name (example: a Deagle):", "", function(name)
+		Derma_StringRequest("#Damagelog.WeaponID", "#Damagelog.WeaponNameExample :", "weapon_", function(class)
+			Derma_StringRequest("#Damagelog.WeaponDisplayName", "#Damagelog.WeaponDisplayExample :", "", function(name)
 				net.Start("DL_AddWeapon")
 				net.WriteString(class)
 				net.WriteString(name)
@@ -74,7 +71,7 @@ function Damagelog:DrawSettings(x, y)
 	self.WeaponForm:AddItem(self.AddWeapon)
 		
 	self.RemoveWeapon = vgui.Create("DButton")
-	self.RemoveWeapon:SetText("Remove the selected weapons/entities")
+	self.RemoveWeapon:SetText(#Damagelog.RemoveSelectedWeapons)
 	self.RemoveWeapon.DoClick = function()
 		if not LocalPlayer():IsSuperAdmin() then return end
 		local classes = {}
@@ -88,20 +85,20 @@ function Damagelog:DrawSettings(x, y)
 	self.WeaponForm:AddItem(self.RemoveWeapon)
 		
 	self.DefautTable = vgui.Create("DButton")
-	self.DefautTable:SetText("Reset to defaults")
+	self.DefautTable:SetText(#Damagelog.ResetDefault)
 	self.DefautTable.DoClick = function()
 		if not LocalPlayer():IsSuperAdmin() then return end
-		Derma_Query("Reset to defaults?", "Are you sure?", "Yes", function()
+		Derma_Query("#Damagelog.ResetDefault ?", "#Damagelog.Yoursure", "#Damagelog.Yes", function()
 			net.Start("DL_WeaponTableDefault")
 			net.SendToServer()
-		end, "No", function() end)
+		end, "#Damagelog.No", function() end)
 	end
 	self.WeaponForm:AddItem(self.DefautTable)
 		
 	self.WepListview = vgui.Create("DListView")
 	self.WepListview:SetHeight(136)
-	self.WepListview:AddColumn("Weapon/entity ID")
-	self.WepListview:AddColumn("Display name")
+	self.WepListview:AddColumn("#Damagelog.WeaponEntityID")
+	self.WepListview:AddColumn("#Damagelog.DisplayName")
 	self.WepListview.Update = function(panel)
 		panel:Clear()
 		for k,v in pairs(Damagelog.weapon_table) do
@@ -121,7 +118,7 @@ function Damagelog:DrawSettings(x, y)
 	self.Settings:AddItem(self.WeaponForm)
 	
 	
-	self.Tabs:AddSheet( "Settings", self.Settings, "icon16/wrench.png", false, false)	
+	self.Tabs:AddSheet( "#Damagelog.Settings", self.Settings, "icon16/wrench.png", false, false)	
 
 end
 
