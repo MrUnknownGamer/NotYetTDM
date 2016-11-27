@@ -1,4 +1,4 @@
-if gmod.GetGamemode().Name == "Trouble in Terrorist Town" then
+if engine.ActiveGamemode() == 'terrortown' then
 	Damagelog = Damagelog or {}
 	Damagelog.VERSION = "3.0"
 
