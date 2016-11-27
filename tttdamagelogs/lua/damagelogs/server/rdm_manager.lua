@@ -1,4 +1,3 @@
-
 util.AddNetworkString("DL_AllowReport")
 util.AddNetworkString("DL_ReportPlayer")
 util.AddNetworkString("DL_UpdateReports")
